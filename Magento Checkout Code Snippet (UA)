@@ -1,0 +1,26 @@
+// this goes in app/design/frontend/base/{{YOUR TEMPLATE}}/{{SUB TEMPLATE}}/checkout/onepage.phtml
+
+
+<script type="text/javascript">
+ //<![CDATA[
+ Checkout.prototype.gotoSection = function (section, reloadProgressBlock) {
+ if (reloadProgressBlock) {
+ this.reloadProgressBlock(this.currentStep);
+ }
+ 
+// Checkout abandonment rate - by Inchoo
+ try {
+  ga('send', 'pageview', '/checkout/onepage/' + section + '/');
+ } catch (err) {
+ }
+ 
+this.currentStep = section;
+ var sectionElement = $('opc-' + section);
+ sectionElement.addClassName('allow');
+ this.accordion.openSection('opc-' + section);
+ if (!reloadProgressBlock) {
+ this.resetPreviousSteps();
+ }
+ };
+ //]]>
+</script>
