@@ -50,9 +50,12 @@
 
 	_ga('create', analyticsCode, 'auto');
 	_ga('require', 'ec');
-
+	var po_outputTest = po_outputTest || [];
 	gle("OnCheckoutStepLoaded", function(data) {
-	    if (data.StepId === data.Steps.CONFIRMATION && data.isSuccess) {
+		po_outputTest.push(JSON.parse(JSON.stringify(data)));
+		console.log("evaluated");
+	    if (data.StepId == data.Steps.CONFIRMATION && data.IsSuccess) {
+		 console.log("success+");
 	        //need to find out if data.country returns current scope or if I'll need to
 	        // store this as a variable
 	        var countryCode = window.GlobalE && GlobalE.Country ? GlobalE.Country : "GB";
@@ -94,7 +97,7 @@
 
 	    } else {
 	        _ga("send", "pageview");
-	        // this should be unnecessary - will pickup tomorrow
+		    console.log("_load");
 	    }
 
 	});
