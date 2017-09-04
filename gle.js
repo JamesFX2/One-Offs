@@ -20,15 +20,17 @@
 	}
 
 	function extractBrand(name) {
-
-	    // this will work sometimes but not reliably
-	    var expression = /\b[A-Z]+[a-z]+\b/g;
-	    var output = name.match(expression);
-	    if (output & output[0]) {
-	        return output.join(" ");
-
+	  var expression = /\b[A-Z]+[a-z]+\b/g;
+	  var output = name.match(expression);
+	  if (output && output[0]) {
+	    return output.join(" ");
+	 } else {
+	    var ph = name.split(" ");
+	    if (ph && ph[0]) {
+	      return ph[0];
 	    }
-	    return "Missing";
+	  }
+	return "Missing";
 	}
 
 
@@ -53,20 +55,9 @@
 	var po_outputTest = po_outputTest || [];
 	gle("OnCheckoutStepLoaded", function(data) {
 		po_outputTest.push(JSON.parse(JSON.stringify(data)));
-		console.log("evaluated");
 	    if (data.StepId == data.Steps.CONFIRMATION && data.IsSuccess) {
-		 console.log("success+");
-	        //need to find out if data.country returns current scope or if I'll need to
-	        // store this as a variable
-	        var countryCode = window.GlobalE && GlobalE.Country ? GlobalE.Country : "GB";
-
-	        //_ga('create', analyticsCode);
-
+	        var countryCode = window.GlobalE && GlobalE.Country ? GlobalE.Country : "GB"
 	        _ga('set', 'currencyCode', data.details.customerCurrency);
-
-
-	        // first we set currency
-	        // next we build a list of products
 	        for (var i = 0; i < data.details.products.length; i++) {
 	            var matches = extractSizeColour(data.details.products[i].sku);
 	            _ga("ec:addProduct", {
