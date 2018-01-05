@@ -65,13 +65,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 				} else {
 				    var sChannel = "na"; // No paid channel assisted
 				}
-				dataLayer = [{
+				window.dataLayer = window.dataLayer || [];
+				dataLayer.push({
 				    'transactionCurrency'   : 'GBP',
 				    'transactionID'         : '<?php echo $datas["transactionId"] ?>',
 				    'transactionPromoCode'  : '<?php echo $datas["transactionPromoCode"]; ?>',
 				    'transactionTotal'      : '<?php echo number_format($datas["transactionTotal"],2); ?>',
 				    'source'                :  sChannel
-				}]; 
+				}); 
 			</script> <?php
 		// Enable modules to add custom data to the data layer
 		$data_layer = new Varien_Object();
@@ -82,7 +83,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 		$data = $data_layer->getData();
 
 		// Generate the data layer JavaScript.
-		if (!empty($data)) return "<script>dataLayer = [".json_encode($data)."];</script>\n\n";
+		// if you remove the above, please add a conditional
+		if (!empty($data)) return "<script>dataLayer.push(".json_encode($data).");</script>\n\n";
 		else return '';
 	}
 
