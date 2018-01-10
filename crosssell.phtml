@@ -11,7 +11,7 @@ $_helper = $this->helper('catalog/output');?>
     <div id="category-products3">
         <?php foreach ($this->getItems() as $_product): ?>
             <div class="item">
-                <div class="products-item">
+                <div class="products-item" data-sku="<?php $_product->getSku(); ?>">
                           <?php
                         $_finalPrice = $this->helper('tax')->getPrice($_product, $_product->getFinalPrice());
                         $_regularPrice = $this->helper('tax')->getPrice($_product, $_product->getPrice());
@@ -40,7 +40,7 @@ $_helper = $this->helper('catalog/output');?>
                         ?>
                     <div class="amlabel-div">
                         <?php echo Mage::helper('amlabel')->getLabels($_product) ?>
-                    <a href="<?php echo $this->getBaseUrl() . $_product->getUrlKey() . ".html" ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->constrainOnly(TRUE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize(300,226);?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+                    <a href="<?php echo $this->getBaseUrl() . $_product->getUrlKey() . ".htmll#_s=cs" ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->constrainOnly(TRUE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize(300,226);?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
                         <?php $_product = Mage::getModel('catalog/product')->load($_product->getId()); ?>
                         <div class="label-product">
                             <?php if ($_product->getData('new')) {
@@ -53,7 +53,7 @@ $_helper = $this->helper('catalog/output');?>
                     </a>
                     </div>
                     <div class="product-shop">
-                        <div class="product-name"><?php $this->helper('yotpo')->showBottomline($this, $_product); ?><a href="<?php echo $this->getBaseUrl() . $_product->getUrlKey() . ".html" ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
+                        <div class="product-name"><?php $this->helper('yotpo')->showBottomline($this, $_product); ?><a href="<?php echo $this->getBaseUrl() . $_product->getUrlKey() . ".html#_s=cs" ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                             </a></div>
 
     <?php echo $this->getPriceHtml($_product, true) ?>
