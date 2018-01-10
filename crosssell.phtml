@@ -11,7 +11,7 @@ $_helper = $this->helper('catalog/output');?>
     <div id="category-products3">
         <?php foreach ($this->getItems() as $_product): ?>
             <div class="item">
-                <div class="products-item" data-sku="<?php $_product->getSku(); ?>">
+                <div class="products-item" data-sku="<?php echo $_product->getSku(); ?>">
                           <?php
                         $_finalPrice = $this->helper('tax')->getPrice($_product, $_product->getFinalPrice());
                         $_regularPrice = $this->helper('tax')->getPrice($_product, $_product->getPrice());
