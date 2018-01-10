@@ -35,7 +35,7 @@
     <div id="category-products2">
         <?php foreach($this->getItems() as $_item): ?>
             <div class="item">
-                <div class="products-item">
+                <div class="products-item" data-sku="<?php $_item->getSku(); ?>">
                           <?php
                         $_finalPrice = $this->helper('tax')->getPrice($_item, $_item->getFinalPrice());
                         $_regularPrice = $this->helper('tax')->getPrice($_item, $_item->getPrice());
@@ -64,7 +64,7 @@
                         ?>
                     <div class="amlabel-div">
                          <?php echo Mage::helper('amlabel')->getLabels($_item) ?>
-                      <a href="<?php echo $this->getBaseUrl() . $_item->getUrlKey() . ".html" ?>" title="<?php echo $this->stripTags($this->getImageLabel($_item, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'small_image')->constrainOnly(TRUE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize(300,226); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_item, 'small_image'), null, true) ?>" />
+                      <a href="<?php echo $this->getBaseUrl() . $_item->getUrlKey() . ".html#_s=rp" ?>" title="<?php echo $this->stripTags($this->getImageLabel($_item, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'small_image')->constrainOnly(TRUE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize(300,226); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_item, 'small_image'), null, true) ?>" />
                         <?php $_product = Mage::getModel('catalog/product')->load($_item->getId()); ?>
                         <div class="label-product">
                             <?php if ($_item->getData('new')) {
@@ -77,7 +77,7 @@
                     </a>
 </div>
                     <div class="product-shop">
-                        <div class="product-name"><?php $this->helper('yotpo')->showBottomline($this, $_item); ?><a href="<?php echo $this->getBaseUrl() . $_item->getUrlKey() . ".html" ?>" title="<?php echo $this->stripTags($_item->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_item, $_item->getName(), 'name') ?>
+                        <div class="product-name"><?php $this->helper('yotpo')->showBottomline($this, $_item); ?><a href="<?php echo $this->getBaseUrl() . $_item->getUrlKey() . ".html#_s=rp" ?>" title="<?php echo $this->stripTags($_item->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_item, $_item->getName(), 'name') ?>
                             </a></div>
     <?php echo $this->getPriceHtml($_item, true) ?>
                             <?php if ($_item->getRatingSummary()): ?>
