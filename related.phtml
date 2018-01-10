@@ -1,0 +1,158 @@
+<?php
+
+// /home/rattandirect/public_html/app/design/frontend/rattandirect/default/template/catalog/product/list/related.phtml
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php if($this->getItems()->getSize()): ?>
+<div class="featured-products">
+    <h2 class="feature-pro">
+        <?php echo $this->__('You may also like..') ?>
+    </h2>
+    <div id="category-products2">
+        <?php foreach($this->getItems() as $_item): ?>
+            <div class="item">
+                <div class="products-item">
+                          <?php
+                        $_finalPrice = $this->helper('tax')->getPrice($_item, $_item->getFinalPrice());
+                        $_regularPrice = $this->helper('tax')->getPrice($_item, $_item->getPrice());
+                        if ($_regularPrice != $_finalPrice):
+                            $getpercentage = number_format($_finalPrice / $_regularPrice * 100, 2);
+                        $finalpercentage = 100 - $getpercentage;
+                        if ($finalpercentage > 0):
+                            echo '<div class="b"><span>Save ' . number_format($finalpercentage, 0) . '%</span></div>';
+                        endif;
+                        endif;
+                        if ($_item->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_BUNDLE):
+
+                            $_priceModel = $_item->getPriceModel();
+                        list($_minimalPriceTax, $_maximalPriceTax) = $_priceModel->getTotalPrices($_item, null, null, false);
+                        list($_minimalPriceInclTax, $_maximalPriceInclTax) = $_priceModel->getTotalPrices($_item, null, true, false);
+                        $_Bundlefinal = number_format((float) $_minimalPriceInclTax, 2, '.', '');
+                        $_bundleRRP = $_item->getbundleorgprice();
+                        $_bundleRRP2 = preg_replace('/[^0-9]/', '', $_bundleRRP);
+                        $_perccal1 = $_bundleRRP2 - $_Bundlefinal;
+                        $_perccal2 = $_perccal1 / $_bundleRRP2;
+                        $_perccal3 = number_format($_perccal2 * 100, 2);
+                        if ($_perccal3 > 0):
+                            echo '<div class="b"><span>Save ' . number_format($_perccal3, 0) . '%</span></div>';
+                        endif;
+                        endif;
+                        ?>
+                    <div class="amlabel-div">
+                         <?php echo Mage::helper('amlabel')->getLabels($_item) ?>
+                      <a href="<?php echo $this->getBaseUrl() . $_item->getUrlKey() . ".html" ?>" title="<?php echo $this->stripTags($this->getImageLabel($_item, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'small_image')->constrainOnly(TRUE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize(300,226); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_item, 'small_image'), null, true) ?>" />
+                        <?php $_product = Mage::getModel('catalog/product')->load($_item->getId()); ?>
+                        <div class="label-product">
+                            <?php if ($_item->getData('new')) {
+                                echo '<span class="new">' . $this->__('New') . '</span>';
+                            } ?>
+    <?php if ($_item->getData('sale')) {
+        echo '<span class="sale">' . $this->__('Sale') . '</span>';
+    } ?>
+                        </div>
+                    </a>
+</div>
+                    <div class="product-shop">
+                        <div class="product-name"><?php $this->helper('yotpo')->showBottomline($this, $_item); ?><a href="<?php echo $this->getBaseUrl() . $_item->getUrlKey() . ".html" ?>" title="<?php echo $this->stripTags($_item->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_item, $_item->getName(), 'name') ?>
+                            </a></div>
+    <?php echo $this->getPriceHtml($_item, true) ?>
+                            <?php if ($_item->getRatingSummary()): ?>
+                                <?php echo $this->getReviewsSummaryHtml($_item, 'short') ?>
+                                        <?php endif; ?>
+                        <div class="actions">
+                                        <?php if ($_item->getneeds_customisation()): ?>
+                                <button type="button" title="<?php echo $this->__('View') ?>" class="button btn-details" onclick="setLocation('<?php echo $this->getBaseUrl() . $_item->getUrlKey() . ".html" ?>')"><span><span><i class="fa fa-eye" aria-hidden="true"></i>
+                                <?php echo $this->__('View') ?></span></span></button>
+                            <?php else : ?>
+                                <button type="button" title="<?php echo $this->__('View') ?>" class="button btn-details" onclick="setLocation('<?php echo $this->getBaseUrl() . $_item->getUrlKey() . ".html" ?>')"><span><span><i class="fa fa-eye" aria-hidden="true"></i>
+                                <?php echo $this->__('View') ?></span></span></button>
+                            <?php endif; ?>
+                            <?php if ($_item->isSaleable()): ?>
+                                <?php if ($_item->getneeds_customisation()): ?>
+                                    <button type="button" title="<?php echo $this->__('Customise') ?>" class="button btn-cart"onclick="setLocation('<?php echo $this->getBaseUrl() . $_item->getUrlKey() . ".html" ?>')"><span><span><i class="fa fa-shopping-cart" aria-hidden="true"></i><?php echo $this->__('Customise') ?></span></span></button>
+                                <?php else : ?>
+                                    <?php
+                                    $productAddUrl = $this->helper('checkout/cart')->getAddUrl($_item);
+                                    if ($_item->getTypeId() == 'bundle'):
+                                        $bundleOptions = '?';
+                                        $selectionCollection = $_item->getTypeInstance(true)->getSelectionsCollection($_item->getTypeInstance(true)->getOptionsIds($_item), $_item);
+                                        foreach ($selectionCollection as $option):
+                                            $bundleOptions .= '&bundle_option[' . $option->option_id . ']=' . $option->selection_id;
+                                            $bundleOptions .= '&bundle_option_qty[' . $option->option_id . ']=' . $option->selection_qty;
+                                        endforeach;
+                                        $productAddUrl .= $bundleOptions;
+                                    endif;
+                                    ?>
+                                    <button type="button" title="<?php echo $this->__('Add to Basket') ?>" class="button btn-cart" onclick="setLocation('<?php echo $productAddUrl ?>')"><span><span><i class="fa fa-shopping-cart" aria-hidden="true"></i><?php echo $this->__('Add to Basket') ?></span></span></button>
+        <?php endif; ?>
+    <?php else: ?>
+                                <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+    <?php endif; ?>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        <?php endforeach ?>
+        
+        
+    </div>
+
+</div>
+<?php endif ?>
+<script type="text/javascript">
+    $relli = jQuery.noConflict();
+    $relli(document).ready(function() {
+        $relli("#category-products2").owlCarousel({
+            dots :false,
+            loop:false,
+            navText: [
+                "<i class='fa fa-long-arrow-left' aria-hidden='true'></i>",
+                "<i class='fa fa-long-arrow-right'  aria-hidden='true'></i>"
+            ],
+            responsive:{
+                0:{
+                    items:1,
+                    <?php if(count($this->getItems()) > 1): ?> nav:true <?php else: ?>nav:false <?php endif; ?>
+                },
+                768:{
+                    items:2,
+                    <?php if(count($this->getItems()) > 2): ?> nav:true <?php else: ?>nav:false <?php endif; ?>
+                },
+                992:{
+                    items:3,
+                    <?php if(count($this->getItems()) > 3): ?> nav:true <?php else: ?>nav:false <?php endif; ?>
+                },
+                1200:{
+                    items:4,
+                    <?php if(count($this->getItems()) > 4): ?> nav:true <?php else: ?>nav:false <?php endif; ?>
+                }
+            },           
+        });
+    });
+</script>
